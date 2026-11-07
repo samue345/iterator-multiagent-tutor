@@ -145,3 +145,31 @@ Modo interativo:
 ```powershell
 python -m agente
 ```
+
+## Execução com Docker Compose
+
+Copie o arquivo de configuração de exemplo, se quiser alterar o modelo:
+
+```bash
+cp .env.example .env
+```
+
+Construa a imagem da aplicação:
+
+```bash
+docker compose build app
+```
+
+Execute uma pergunta. O Compose inicia o Ollama e baixa o modelo definido em `OLLAMA_MODEL` na primeira execução:
+
+```bash
+docker compose run --rm app "Explique o que é o padrão Iterator."
+```
+
+Para abrir o modo interativo:
+
+```bash
+docker compose run --rm app
+```
+
+O modelo baixado fica persistido no volume Docker `ollama_data`.
