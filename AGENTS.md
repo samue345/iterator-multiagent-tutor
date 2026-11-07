@@ -28,6 +28,16 @@
 - Testar mudanças relevantes antes de concluir uma tarefa.
 - Não modificar mudanças existentes sem verificar sua origem.
 
+## Desenvolvimento incremental obrigatório
+
+- Implementar somente uma milestone por vez.
+- Modificar no máximo 5 arquivos por milestone.
+- Parar ao concluir a milestone e aguardar autorização explícita do usuário antes de iniciar a próxima.
+- Não interpretar "continue" como autorização para executar várias milestones.
+- Não criar testes, módulos ou melhorias de fases futuras durante a milestone atual.
+- Antes de alterar arquivos, informar qual milestone será implementada e quais arquivos serão modificados.
+- Se uma milestone exigir mais de 5 arquivos, dividir a milestone em etapas menores e pedir autorização antes de prosseguir.
+
 ## Git
 
 - Usar mensagens de commit objetivas e em português ou inglês consistente com o histórico.
