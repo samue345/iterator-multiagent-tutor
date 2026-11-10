@@ -30,16 +30,16 @@ A coordenação entre agentes será feita pelo CrewAI. O uso do padrão Iterator
 
 ### Configuração do projeto
 
-- [ ] Definir a estrutura de pacotes Python.
-- [ ] Criar `requirements.txt` com versões fixadas.
-- [ ] Configurar o modelo local do Ollama.
-- [ ] Centralizar as configurações em um módulo próprio.
-- [ ] Adicionar arquivos de configuração de exemplo sem credenciais.
+- [x] Definir a estrutura de pacotes Python.
+- [x] Criar `requirements.txt` com versões fixadas.
+- [x] Configurar o modelo local do Ollama.
+- [x] Centralizar as configurações em um módulo próprio.
+- [x] Adicionar arquivos de configuração de exemplo sem credenciais.
 
 ### Agentes e prompts
 
-- [ ] Criar a fábrica ou módulo de construção dos agentes.
-- [ ] Implementar o agente tutor conceitual.
+- [x] Criar a fábrica ou módulo de construção dos agentes.
+- [x] Implementar o agente tutor conceitual.
 - [ ] Implementar o agente exemplificador.
 - [ ] Implementar o agente diagnosticador.
 - [ ] Implementar o agente revisor.
@@ -66,21 +66,21 @@ A coordenação entre agentes será feita pelo CrewAI. O uso do padrão Iterator
 
 ### CLI
 
-- [ ] Implementar o ponto de entrada `python -m agente`.
-- [ ] Aceitar uma pergunta diretamente pela linha de comando.
-- [ ] Implementar o modo interativo de conversa.
-- [ ] Implementar o comando de saída.
+- [x] Implementar o ponto de entrada `python -m agente`.
+- [x] Aceitar uma pergunta diretamente pela linha de comando.
+- [x] Implementar o modo interativo de conversa.
+- [x] Implementar o comando de saída.
 - [ ] Exibir mensagens de erro compreensíveis.
 
 ### Robustez
 
-- [ ] Tratar entrada vazia.
+- [x] Tratar entrada vazia.
 - [ ] Tratar Ollama indisponível.
 - [ ] Tratar falha de uma tarefa ou agente.
 - [ ] Validar respostas vazias ou em formato inesperado.
 - [ ] Recusar pedidos para inventar padrões ou informações.
-- [ ] Orientar o estudante sem entregar uma solução completa imediatamente.
-- [ ] Redirecionar perguntas fora do escopo do Iterator.
+- [x] Orientar o estudante sem entregar uma solução completa imediatamente.
+- [x] Redirecionar perguntas fora do escopo do Iterator.
 
 ### Testes
 
@@ -101,10 +101,10 @@ A coordenação entre agentes será feita pelo CrewAI. O uso do padrão Iterator
 
 ### Documentação técnica
 
-- [ ] Documentar a estrutura do projeto.
-- [ ] Documentar a configuração do Ollama.
-- [ ] Documentar o comando de instalação.
-- [ ] Documentar o comando de execução.
+- [x] Documentar a estrutura do projeto.
+- [x] Documentar a configuração do Ollama.
+- [x] Documentar o comando de instalação.
+- [x] Documentar o comando de execução.
 - [ ] Documentar todos os agentes e seus prompts.
 - [ ] Documentar o fluxo de coordenação.
 - [ ] Documentar as decisões de arquitetura.
