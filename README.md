@@ -26,6 +26,8 @@ O sistema terá agentes com responsabilidades separadas:
 
 A coordenação entre agentes será feita pelo CrewAI. O uso do padrão Iterator na implementação interna é opcional; o requisito principal é que o sistema ensine o padrão Iterator.
 
+O roteamento usa uma estratégia híbrida. Regras explícitas reconhecem pedidos claros de exemplos, demonstrações, código ou diagnóstico. Quando a intenção não é evidente, o roteador consulta o LLM local e classifica a pergunta como conceitual, exemplo ou diagnóstico. Se a resposta do roteador semântico for inválida, o fluxo conceitual é usado como fallback. O agente especialista responde primeiro e o revisor consolida a resposta final.
+
 ## Tarefas de desenvolvimento
 
 ### Configuração do projeto
@@ -40,21 +42,21 @@ A coordenação entre agentes será feita pelo CrewAI. O uso do padrão Iterator
 
 - [x] Criar a fábrica ou módulo de construção dos agentes.
 - [x] Implementar o agente tutor conceitual.
-- [ ] Implementar o agente exemplificador.
-- [ ] Implementar o agente diagnosticador.
-- [ ] Implementar o agente revisor.
-- [ ] Escrever os prompts completos de sistema de cada agente.
-- [ ] Definir o contrato de entrada e saída de cada agente.
-- [ ] Definir escopo, regras pedagógicas e regras anti-alucinação.
+- [x] Implementar o agente exemplificador.
+- [x] Implementar o agente diagnosticador.
+- [x] Implementar o agente revisor.
+- [x] Escrever os prompts completos de sistema de cada agente.
+- [x] Definir o contrato de entrada e saída de cada agente.
+- [x] Definir escopo, regras pedagógicas e regras anti-alucinação.
 
 ### Coordenação com CrewAI
 
-- [ ] Criar as `Task`s associadas a cada agente.
-- [ ] Implementar o fluxo de execução entre as tarefas.
-- [ ] Passar os resultados relevantes de um agente para o próximo.
-- [ ] Implementar a seleção de agentes ou tarefas conforme o tipo de pergunta.
-- [ ] Produzir uma única resposta final revisada.
-- [ ] Evitar executar agentes que não sejam necessários para uma pergunta.
+- [x] Criar as `Task`s associadas a cada agente.
+- [x] Implementar o fluxo de execução entre as tarefas.
+- [x] Passar os resultados relevantes de um agente para o próximo.
+- [x] Implementar a seleção de agentes ou tarefas conforme o tipo de pergunta.
+- [x] Produzir uma única resposta final revisada.
+- [x] Evitar executar agentes que não sejam necessários para uma pergunta.
 
 ### Memória e contexto
 
@@ -75,7 +77,7 @@ A coordenação entre agentes será feita pelo CrewAI. O uso do padrão Iterator
 ### Robustez
 
 - [x] Tratar entrada vazia.
-- [ ] Tratar Ollama indisponível.
+- [x] Tratar Ollama indisponível.
 - [ ] Tratar falha de uma tarefa ou agente.
 - [ ] Validar respostas vazias ou em formato inesperado.
 - [ ] Recusar pedidos para inventar padrões ou informações.
@@ -106,8 +108,8 @@ A coordenação entre agentes será feita pelo CrewAI. O uso do padrão Iterator
 - [x] Documentar o comando de instalação.
 - [x] Documentar o comando de execução.
 - [ ] Documentar todos os agentes e seus prompts.
-- [ ] Documentar o fluxo de coordenação.
-- [ ] Documentar as decisões de arquitetura.
+- [x] Documentar o fluxo de coordenação.
+- [x] Documentar as decisões de arquitetura.
 - [ ] Documentar limitações conhecidas.
 - [ ] Documentar os resultados dos testes técnicos.
 

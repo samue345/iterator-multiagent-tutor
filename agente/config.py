@@ -1,16 +1,33 @@
-import os
-from dataclasses import dataclass
+from functools import lru_cache
+from typing import Annotated
+
+from pydantic import AnyHttpUrl, Field, StringConstraints
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-@dataclass(frozen=True)
-class Settings:
-    ollama_base_url: str = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-    ollama_model: str = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
-    temperature: float = float(os.getenv("MODEL_TEMPERATURE", "0.2"))
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore",
+        frozen=True,
+        validate_default=True,
+    )
+
+    ollama_base_url: AnyHttpUrl = "http://localhost:11434"
+    ollama_model: Annotated[
+        str,
+        StringConstraints(strip_whitespace=True, min_length=1),
+    ] = "qwen2.5:3b"
+    temperature: float = Field(default=0.2, ge=0)
 
     @property
     def ollama_model_id(self) -> str:
         return f"ollama/{self.ollama_model}"
 
 
-settings = Settings()
+@lru_cache(maxsize=1)
+def get_settings() -> Settings:
+    return Settings()
+
+
+settings = get_settings()
