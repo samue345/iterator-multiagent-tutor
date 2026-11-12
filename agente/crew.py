@@ -33,7 +33,12 @@ def create_crew(
         specialist_task = create_concept_task(question, specialist, context)
 
     reviewer = create_reviewer_tutor(config)
-    review_task = create_review_task(question, reviewer, [specialist_task])
+    review_task = create_review_task(
+        question,
+        reviewer,
+        [specialist_task],
+        conversation_context=context,
+    )
 
     return Crew(
         agents=[specialist, reviewer],
@@ -48,6 +53,6 @@ def run_crew(
     question: str,
     flow: Flow,
     context: str = "",
-) -> str:
+) -> object:
     result = create_crew(config, question, flow, context).kickoff()
-    return str(result)
+    return getattr(result, "raw", result)

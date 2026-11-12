@@ -28,6 +28,8 @@ A coordenação entre agentes será feita pelo CrewAI. O uso do padrão Iterator
 
 O roteamento usa uma estratégia híbrida. Regras explícitas reconhecem pedidos claros de exemplos, demonstrações, código ou diagnóstico. Quando a intenção não é evidente, o roteador consulta o LLM local e classifica a pergunta como conceitual, exemplo ou diagnóstico. Se a resposta do roteador semântico for inválida, o fluxo conceitual é usado como fallback. O agente especialista responde primeiro e o revisor consolida a resposta final.
 
+O histórico é mantido apenas durante a vida de uma instância de `TutorSystem`. Cada nova execução da CLI começa sem histórico; no modo interativo, as perguntas anteriores da mesma sessão são incluídas no contexto. O tutor mantém até seis turnos e limita o contexto enviado às tarefas a 8.000 caracteres, priorizando os turnos mais recentes. Apenas a saída final do fluxo, após a tarefa do revisor, é guardada. O revisor recebe o histórico como referência e deve conferir sua correção antes de reutilizar qualquer informação.
+
 ## Tarefas de desenvolvimento
 
 ### Configuração do projeto
@@ -60,11 +62,11 @@ O roteamento usa uma estratégia híbrida. Regras explícitas reconhecem pedidos
 
 ### Memória e contexto
 
-- [ ] Implementar o histórico da conversa.
-- [ ] Limitar o histórico enviado ao modelo quando necessário.
-- [ ] Incorporar perguntas e respostas anteriores ao contexto das tarefas.
-- [ ] Evitar que respostas incorretas sejam reutilizadas sem revisão.
-- [ ] Definir o comportamento para uma nova sessão.
+- [x] Implementar histórico limitado à sessão do tutor.
+- [x] Limitar o histórico enviado ao modelo a seis turnos e 8.000 caracteres.
+- [x] Incorporar perguntas e respostas anteriores ao contexto das tarefas.
+- [x] Guardar apenas a resposta final após o fluxo do revisor.
+- [x] Iniciar uma sessão vazia para cada nova execução da CLI.
 
 ### CLI
 
@@ -72,15 +74,21 @@ O roteamento usa uma estratégia híbrida. Regras explícitas reconhecem pedidos
 - [x] Aceitar uma pergunta diretamente pela linha de comando.
 - [x] Implementar o modo interativo de conversa.
 - [x] Implementar o comando de saída.
-- [ ] Exibir mensagens de erro compreensíveis.
+- [x] Exibir mensagens de erro compreensíveis sem mostrar traceback na CLI.
 
 ### Robustez
 
+Falhas na classificação ou nas tarefas dos agentes são convertidas em mensagens
+compreensíveis na CLI. Respostas finais vazias, sentinelas como `None` ou valores
+que não sejam texto são rejeitadas e não entram na memória. Pedidos explícitos para
+inventar padrões ou fatos recebem uma recusa direta; os prompts já proíbem
+informações inventadas nas respostas dos agentes e do revisor.
+
 - [x] Tratar entrada vazia.
 - [x] Tratar Ollama indisponível.
-- [ ] Tratar falha de uma tarefa ou agente.
-- [ ] Validar respostas vazias ou em formato inesperado.
-- [ ] Recusar pedidos para inventar padrões ou informações.
+- [x] Tratar falha de uma tarefa ou agente.
+- [x] Validar respostas vazias ou em formato inesperado.
+- [x] Recusar pedidos para inventar padrões ou informações.
 - [x] Orientar o estudante sem entregar uma solução completa imediatamente.
 - [x] Redirecionar perguntas fora do escopo do Iterator.
 
@@ -122,9 +130,13 @@ iterator-multiagent-tutor/
 │   ├── __main__.py
 │   ├── agents.py
 │   ├── config.py
+│   ├── contracts.py
 │   ├── crew.py
+│   ├── llm.py
 │   ├── memory.py
 │   ├── prompts.py
+│   ├── router.py
+│   ├── system.py
 │   └── tasks.py
 ├── tests/
 ├── .env.example

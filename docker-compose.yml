@@ -29,6 +29,7 @@ services:
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://ollama:11434}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:3b}
       MODEL_TEMPERATURE: ${MODEL_TEMPERATURE:-0.2}
+      OTEL_SDK_DISABLED: ${OTEL_SDK_DISABLED:-true}
       PYTHONUNBUFFERED: ${PYTHONUNBUFFERED:-1}
     depends_on:
       ollama-init:

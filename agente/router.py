@@ -8,6 +8,8 @@ from .llm import create_llm
 
 
 class Flow(StrEnum):
+    GREETING = "greeting"
+    REFUSAL = "refusal"
     CONCEPT = "concept"
     EXAMPLE = "example"
     DIAGNOSTIC = "diagnostic"
@@ -57,9 +59,58 @@ SEMANTIC_PROMPT = (
     "Pergunta: {question}\nResposta:"
 )
 
+GREETING_PATTERNS = (
+    re.compile(
+        r"^(?:oi+|ol[áa]|e a[ií]|bom dia|boa tarde|boa noite|tudo bem|"
+        r"como (?:vai|voc[eê] est[aá]))[!?., ]*$",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"^(?:oi+|ol[áa]|e a[ií]|bom dia|boa tarde|boa noite)[,. ]+"
+        r"(?:tudo bem|como (?:vai|voc[eê] est[aá]))[!?., ]*$",
+        re.IGNORECASE,
+    ),
+)
+
+FABRICATION_PATTERNS = (
+    re.compile(
+        r"\b(?:invent\w*|fabric\w*|make up)\b.{0,80}"
+        r"\b(?:padr[aã]o|fato|informa[cç][aã]o|participante|consequ[eê]ncia|"
+        r"pattern|fact|information|participant|consequence)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"\b(?:crie|criar|create)\b.{0,60}"
+        r"\b(?:falso|falsa|fict[ií]cio|fict[ií]cia|inexistente|fake|"
+        r"fictional|nonexistent)\b",
+        re.IGNORECASE,
+    ),
+)
+
 
 def _normalize(text: str) -> str:
     return " ".join(text.casefold().split())
+
+
+def _is_greeting(question: str) -> bool:
+    normalized = _normalize(question)
+    return any(pattern.fullmatch(normalized) for pattern in GREETING_PATTERNS)
+
+
+def _is_fabrication_request(question: str) -> bool:
+    normalized = _normalize(question)
+    for pattern in FABRICATION_PATTERNS:
+        match = pattern.search(normalized)
+        if match is None:
+            continue
+        prefix = normalized[max(0, match.start() - 40) : match.start()]
+        if re.search(
+            r"\b(?:n[aã]o|nunca|never|don't|do not)(?:\s+\w+){0,2}\s*$",
+            prefix,
+        ):
+            continue
+        return True
+    return False
 
 
 def _matches_rule(rule: RouteRule, question: str) -> bool:
@@ -86,5 +137,9 @@ def _select_semantic_flow(question: str, config: Settings) -> Flow:
 
 
 def select_flow(question: str, config: Settings = settings) -> Flow:
+    if _is_greeting(question):
+        return Flow.GREETING
+    if _is_fabrication_request(question):
+        return Flow.REFUSAL
     explicit_flow = _select_explicit_flow(question)
     return explicit_flow or _select_semantic_flow(question, config)

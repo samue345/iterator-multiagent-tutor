@@ -10,7 +10,7 @@ def create_llm(config: Settings) -> LLM:
     check_ollama_available(config)
     return LLM(
         model=config.ollama_model_id,
-        base_url=str(config.ollama_base_url),
+        base_url=str(config.ollama_base_url).rstrip("/"),
         temperature=config.temperature,
     )
 
