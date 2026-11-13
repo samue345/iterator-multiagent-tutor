@@ -23,8 +23,8 @@ Tutor multiagente em Python que ensina o padrão de projeto Iterator por meio de
 - [x] Instalar as dependências de desenvolvimento e executar a suíte completa com `python -m pytest -q` (`37 passed`).
 - [x] Validar a CLI com uma saudação sem depender do Ollama.
 - [x] Corrigir o alinhamento da variável `TEMPERATURE` entre o Docker Compose, o `.env.example` e a aplicação.
-- [ ] Validar a execução ponta a ponta com o Ollama e o modelo configurado — requer Ollama instalado e em execução.
-- [ ] Fazer testes manuais de qualidade das respostas conceituais, exemplos em Java e diagnósticos — requer Ollama e um modelo disponível.
+- [x] Validar a execução ponta a ponta com o Ollama e o modelo `qwen2.5:3b` no WSL2.
+- [x] Fazer testes manuais dos oito cenários de qualidade e registrar respostas e julgamentos em `docs/evidencias-cenarios.json`.
 - [ ] Avaliar o desempenho com modelos locais de tamanhos diferentes — requer modelos locais e ambiente de medição.
 
 ## Requisitos
@@ -51,6 +51,23 @@ $env:OLLAMA_MODEL = "qwen2.5:3b"
 $env:OLLAMA_BASE_URL = "http://localhost:11434"
 $env:TEMPERATURE = "0.2"
 ```
+
+### Execução no WSL2
+
+O ambiente usado para a validação foi Ubuntu em WSL2. A instalação do Ollama e a execução da aplicação podem ser feitas dentro do próprio WSL:
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+ollama serve
+# em outro terminal WSL
+ollama pull qwen2.5:3b
+python3 -m venv .venv-wsl
+source .venv-wsl/bin/activate
+pip install -r requirements.txt
+OLLAMA_BASE_URL=http://127.0.0.1:11434 python -m agente "Explique o padrão Iterator."
+```
+
+O Ollama instalado no WSL oferece a CLI `ollama` e mantém o modelo localmente. Para gerar novamente as evidências curtas da documentação, execute `python docs/coletar_evidencias_ollama.py`; o resultado será salvo em `docs/evidencias-cenarios.json`.
 
 ## Uso
 

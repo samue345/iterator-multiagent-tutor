@@ -12,6 +12,7 @@ def create_llm(config: Settings) -> LLM:
         model=config.ollama_model_id,
         base_url=str(config.ollama_base_url).rstrip("/"),
         temperature=config.temperature,
+        max_tokens=600,
     )
 
 

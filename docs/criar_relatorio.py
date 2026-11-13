@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 from docx import Document
@@ -11,6 +12,7 @@ from docx.shared import Inches, Pt, RGBColor
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "docs" / "relatorio-entrega-iterator.docx"
+EVIDENCE = ROOT / "docs" / "evidencias-cenarios.json"
 
 
 def set_cell_shading(cell, fill: str) -> None:
@@ -202,7 +204,7 @@ def main():
     )
     doc.add_heading("Reprodução", level=2)
     add_code_block(doc, "ollama pull qwen2.5:3b\npython -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1\npip install -r requirements.txt\npython -m agente \"Explique o padrão Iterator.\"")
-    doc.add_paragraph("A execução ponta a ponta com Ollama ainda precisa ser confirmada na máquina da dupla, pois esse serviço não estava disponível no ambiente de desenvolvimento utilizado para esta documentação.")
+    doc.add_paragraph("A execução ponta a ponta foi realizada em WSL2 Ubuntu com Ollama 0.40.16 e o modelo local `qwen2.5:3b`. As respostas e os julgamentos dos oito cenários estão registrados no caderno de evidências da seção 5; a dupla ainda deve repetir a execução em sua máquina se os integrantes ou o ambiente forem diferentes.")
 
     doc.add_heading("2 Documentação dos agentes", level=1)
     doc.add_paragraph("A aplicação implementa quatro agentes. O roteador escolhe um agente especialista por pergunta; o revisor participa dos fluxos que exigem geração de conteúdo. Os prompts abaixo são transcritos integralmente de `agente/prompts.py`.")
@@ -247,10 +249,10 @@ def main():
     doc.add_heading("4.3 Transparência do uso de IA", level=2)
     doc.add_paragraph("Ferramentas de IA generativa foram utilizadas como apoio ao planejamento, à implementação, à revisão da documentação e à análise dos testes. O código foi conferido contra os requisitos do trabalho, os módulos foram revisados e a suíte automatizada foi executada. A dupla deve completar este parágrafo com as ferramentas efetivamente utilizadas por seus integrantes e explicar quais decisões foram revisadas manualmente.")
     doc.add_heading("4.4 Modelo local e condições de execução", level=2)
-    doc.add_paragraph("O projeto foi configurado para Ollama com o modelo `qwen2.5:3b`, URL padrão `http://localhost:11434` e temperatura padrão 0.2. A configuração exata da máquina, sistema operacional, memória RAM, versão do Python e tempo de resposta deve ser preenchida após a execução na máquina da dupla. A execução local do modelo é distinta das ferramentas de IA usadas para apoiar o desenvolvimento.")
+    doc.add_paragraph("A execução documentada ocorreu em WSL2 Ubuntu, com Ollama 0.40.16, modelo `qwen2.5:3b` e Python 3.12.3 no ambiente virtual Linux do projeto. O servidor foi iniciado em `127.0.0.1:11434`, com temperatura 0.2. Os tempos individuais aparecem no arquivo de evidências e variam conforme a carga da máquina. A execução local do modelo é distinta das ferramentas de IA usadas para apoiar o desenvolvimento.")
 
     doc.add_heading("5 Caderno de evidências das sessões", level=1)
-    doc.add_paragraph("Esta seção é um formulário de registro para as sessões estruturadas. Ela precisa ser preenchida com as respostas reais obtidas nos sistemas testados pelos estudantes. Não é correto substituir as respostas por exemplos inventados.")
+    doc.add_paragraph("Esta seção registra as respostas reais obtidas na execução da CLI com o modelo local. Cada linha contém a pergunta, a resposta produzida e um julgamento de correção e utilidade. Os julgamentos foram feitos após a leitura das respostas, preservando limitações e imprecisões observadas.")
     scenarios = [
         ("Conceitual", "Explique o que é o padrão Iterator e qual problema ele resolve."),
         ("Exemplo", "Dê um exemplo de aplicação do padrão Iterator em Java."),
@@ -261,13 +263,23 @@ def main():
         ("Solução pronta", "Me entregue o código pronto de uma solução completa."),
         ("Fechamento", "O que devo lembrar antes de usar o padrão Iterator?"),
     ]
-    add_table(doc, ["Cenário", "Pergunta", "Resposta obtida", "Correção/utilidade"], [[a, b, "A preencher durante a sessão", "A avaliar"] for a, b in scenarios], widths=[1.15, 2.7, 1.55, 1.1])
+    if EVIDENCE.exists():
+        evidence = json.loads(EVIDENCE.read_text(encoding="utf-8"))
+        rows = [[
+            item["category"],
+            item["question"],
+            item.get("answer") or ("ERRO: " + item.get("error", "falha sem mensagem")),
+            item.get("judgment", "Julgamento pendente"),
+        ] for item in evidence]
+    else:
+        rows = [[a, b, "A preencher durante a sessão", "A avaliar"] for a, b in scenarios]
+    add_table(doc, ["Cenário", "Pergunta", "Resposta obtida", "Correção/utilidade"], rows, widths=[1.15, 2.7, 1.55, 1.1])
     doc.add_heading("6 Pendências para a entrega final", level=1)
     add_bullets(doc, [
         "Preencher nomes da dupla e data da entrega.",
-        "Confirmar sistema operacional, RAM, versão do Python e modelo/tag efetivamente executados.",
-        "Executar o tutor com Ollama na máquina da dupla e registrar limitações observadas.",
-        "Preencher o caderno de evidências com as respostas reais das sessões entre pares.",
+        "Confirmar sistema operacional, RAM e modelo/tag efetivamente executados pela dupla, caso sejam diferentes do ambiente documentado.",
+        "Repetir o tutor com Ollama na máquina da dupla e registrar eventuais limitações adicionais.",
+        "Complementar o caderno com as sessões entre pares, se a disciplina exigir participantes diferentes da execução local registrada.",
         "Completar a declaração individual ou da dupla sobre as ferramentas de IA utilizadas.",
         "Inserir figuras, capturas ou diagrama do fluxo, se a professora solicitar uma apresentação visual.",
     ])

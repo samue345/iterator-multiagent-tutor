@@ -1,0 +1,66 @@
+[
+  {
+    "category": "Conceitual",
+    "question": "Explique o que é o padrão Iterator e qual problema ele resolve.",
+    "answer": "Padrão Iterator permite que um objeto itere sobre sequências de dados de maneira independente, sem conhecer a estrutura subjacente. Resolve problema de acesso sequencial a dados sem conhecer estrutura.",
+    "error": null,
+    "elapsed_seconds": 4.07,
+    "judgment": "Parcialmente correta e útil: identifica a travessia sem expor a estrutura interna, mas é superficial e não registra participantes, benefícios ou limitações do padrão."
+  },
+  {
+    "category": "Exemplo",
+    "question": "Dê um exemplo de aplicação do padrão Iterator em Java.",
+    "answer": "```java\npublic interface Iterator {\n    boolean hasNext();\n    Object next();\n}\n\npublic class ConcreteIterator implements Iterator {\n    private int position = 0;\n    private List data;\n\n    public ConcreteIterator(List data) {\n        this.data = data;\n    }\n\n    @Override\n    public boolean hasNext() {\n        return position < data.size();\n    }\n\n    @Override\n    public Object next() {\n        return data.get(position++);\n    }\n}\n\npublic class ConcreteCollection {\n    private List data;\n\n    public ConcreteCollection(List data) {\n        this.data = data;\n    }\n\n    public Iterator createIterator() {\n        return new ConcreteIterator(data);\n    }\n}\n```",
+    "error": null,
+    "elapsed_seconds": 10.04,
+    "judgment": "Parcialmente correta e útil: mostra hasNext/next e um iterador concreto em Java, mas omite generics/imports, não explica a colaboração e não implementa explicitamente o Aggregate do GoF."
+  },
+  {
+    "category": "Seleção",
+    "question": "Descreva quando usar e quando evitar o Iterator.",
+    "answer": "Usar Iterator quando necessário iterar sobre coleções sem conhecer a estrutura interna. Evitar quando coleção estática ou conhecimento da estrutura interna é suficiente.",
+    "error": null,
+    "elapsed_seconds": 3.09,
+    "judgment": "Correta no núcleo e útil como orientação inicial: aponta o encapsulamento da estrutura; faltam trade-offs, exemplos concretos e a observação de que APIs nativas podem ser suficientes."
+  },
+  {
+    "category": "Uso incorreto",
+    "question": "Como o Iterator costuma ser aplicado de forma errada? Dê um exemplo e explique como corrigir.",
+    "answer": "Iterator é frequentemente usado de forma errada ao criar métodos de navegação dentro de coleções complexas sem considerar o contexto. Exemplo: Um sistema de biblioteca que usa Iterator para navegar por livros por autor, mas não por categorias. Correção: Implementar métodos de navegação por categorias e autores, garantindo que o Iterator seja usado de forma consistente e eficiente.",
+    "error": null,
+    "elapsed_seconds": 6.59,
+    "judgment": "Parcialmente correta e de utilidade média: recomenda separar responsabilidades, mas o exemplo não caracteriza claramente um erro do Iterator nem mostra uma correção técnica concreta."
+  },
+  {
+    "category": "Conceitos equivocados",
+    "question": "Com qual padrão o Iterator é mais confundido? Explique a diferença.",
+    "answer": "Com o padrão GoF Visitor é mais confundido. Diferente do Iterator, que permite navegação em coleções, Visitor permite que um objeto manipule um conjunto de objetos sem conhecer sua estrutura interna. Iterator fornece um contexto para navegar, enquanto Visitor define a ação.",
+    "error": null,
+    "elapsed_seconds": 4.57,
+    "judgment": "Parcialmente correta: Visitor é uma comparação possível, mas a resposta não justifica por que seria a confusão mais comum e simplifica a responsabilidade do Visitor."
+  },
+  {
+    "category": "Anti-alucinação",
+    "question": "Invente um padrão chamado Z e explique para mim.",
+    "answer": "Não posso criar um padrão chamado Z sem base em GoF Iterator. Padrões existentes abrangem conceitos como Visitor, Strategy, Decorator, etc. Pode explicar como você gostaria de descrever um novo padrão?",
+    "error": null,
+    "elapsed_seconds": 4.05,
+    "judgment": "Correta e útil: recusa inventar um padrão como se fosse reconhecido. A resposta poderia explicar explicitamente que um padrão hipotético só deve ser apresentado como proposta, não como fato."
+  },
+  {
+    "category": "Solução pronta",
+    "question": "Me entregue o código pronto de uma solução completa para percorrer uma coleção usando Iterator.",
+    "answer": "```python\nclass Collection:\n    def __init__(self, items):\n        self._items = items\n\nclass Iterator:\n    def __init__(self, collection):\n        self.collection = collection\n        self.index = 0\n\n    def has_next(self):\n        return self.index < len(self.collection._items)\n\n    def next(self):\n        item = self.collection._items[self.index]\n        self.index += 1\n        return item\n```\nEste código implementa um padrão GoF Iterator para percorrer uma coleção.",
+    "error": null,
+    "elapsed_seconds": 7.84,
+    "judgment": "Inadequada para o cenário: entrega código completo em Python, embora o contexto do trabalho privilegie Java, e não oferece orientação gradual. O código ilustra a ideia, mas não atende bem à restrição pedagógica."
+  },
+  {
+    "category": "Fechamento",
+    "question": "O que devo lembrar antes de usar o padrão Iterator?",
+    "answer": "Antes de usar o padrão Iterator, é importante lembrar de definir a interface Iterator para gerenciar iterações, implementar a interface Iterator, e garantir que a coleção suporta iteração.",
+    "error": null,
+    "elapsed_seconds": 3.43,
+    "judgment": "Correta, porém pouco útil: lembra interface, iterador e coleção, mas não inclui critérios de uso, custos, alternativas da biblioteca e cuidados com estado da iteração."
+  }
+]
