@@ -283,7 +283,7 @@ def main():
         ["Configuração de temperatura inconsistente", "Compose usava `MODEL_TEMPERATURE`, mas a aplicação lê `TEMPERATURE`.", "Alinhamento no Compose e no `.env.example`."],
     ], widths=[1.75, 2.25, 2.5])
     doc.add_heading("4.3 Transparência do uso de IA", level=2)
-    doc.add_paragraph("Ferramentas de IA generativa foram utilizadas como apoio ao planejamento, à implementação, à revisão da documentação e à análise dos testes. O código foi conferido contra os requisitos do trabalho, os módulos foram revisados e a suíte automatizada foi executada. A dupla deve completar este parágrafo com as ferramentas efetivamente utilizadas por seus integrantes e explicar quais decisões foram revisadas manualmente.")
+    doc.add_paragraph("Foram utilizadas ferramentas de IA generativa como apoio ao planejamento, à implementação, à revisão do código, à elaboração dos testes e à organização da documentação. O código foi conferido contra os requisitos do trabalho, os módulos foram revisados e a suíte automatizada foi executada. Também foi utilizado o modelo local `qwen2.5:3b`, executado por meio do Ollama no WSL2, para validar as respostas do tutor nos cenários registrados. As decisões técnicas, a execução do sistema, a avaliação das respostas e a revisão final do material foram realizadas manualmente pelos integrantes da dupla.")
     doc.add_heading("4.4 Modelo local e condições de execução", level=2)
     doc.add_paragraph("A execução documentada ocorreu em WSL2 Ubuntu, com Ollama 0.40.16, modelo `qwen2.5:3b` e Python 3.12.3 no ambiente virtual Linux do projeto. O servidor foi iniciado em `127.0.0.1:11434`, com temperatura 0.2. Os tempos individuais aparecem no arquivo de evidências e variam conforme a carga da máquina. A execução local do modelo é distinta das ferramentas de IA usadas para apoiar o desenvolvimento.")
 
@@ -316,7 +316,7 @@ def main():
         "Confirmar sistema operacional, RAM e modelo/tag efetivamente executados pela dupla, caso sejam diferentes do ambiente documentado.",
         "Repetir o tutor com Ollama na máquina da dupla e registrar eventuais limitações adicionais.",
         "Complementar o caderno com as sessões entre pares, se a disciplina exigir participantes diferentes da execução local registrada.",
-        "Completar a declaração individual ou da dupla sobre as ferramentas de IA utilizadas.",
+        "Confirmar se a declaração de uso de IA precisa ser individual, caso a professora exija uma declaração separada por integrante.",
         "Confirmar se a professora solicita figuras adicionais além do fluxograma incluído neste relatório.",
     ])
     doc.add_heading("7 Conclusão", level=1)
