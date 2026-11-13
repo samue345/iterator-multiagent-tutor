@@ -50,10 +50,10 @@
   {
     "category": "Solução pronta",
     "question": "Me entregue o código pronto de uma solução completa para percorrer uma coleção usando Iterator.",
-    "answer": "```python\nclass Collection:\n    def __init__(self, items):\n        self._items = items\n\nclass Iterator:\n    def __init__(self, collection):\n        self.collection = collection\n        self.index = 0\n\n    def has_next(self):\n        return self.index < len(self.collection._items)\n\n    def next(self):\n        item = self.collection._items[self.index]\n        self.index += 1\n        return item\n```\nEste código implementa um padrão GoF Iterator para percorrer uma coleção.",
+    "answer": "Não vou entregar uma solução completa pronta sem uma tentativa sua. Posso explicar a estrutura do Iterator, revisar seu código ou orientar a implementação passo a passo.",
     "error": null,
-    "elapsed_seconds": 7.84,
-    "judgment": "Inadequada para o cenário: entrega código completo em Python, embora o contexto do trabalho privilegie Java, e não oferece orientação gradual. O código ilustra a ideia, mas não atende bem à restrição pedagógica."
+    "elapsed_seconds": 3.21,
+    "judgment": "Correta e útil: recusa a solução completa pronta, oferece revisão e orientação passo a passo e confirma que a barreira ocorre antes da execução dos agentes."
   },
   {
     "category": "Fechamento",

@@ -58,6 +58,12 @@ class TutorSystem:
                 "Não vou inventar padrões, participantes ou fatos. Posso ajudar "
                 "com informações confiáveis sobre o padrão Iterator."
             )
+        if flow is Flow.SOLUTION_REFUSAL:
+            return (
+                "Não vou entregar uma solução completa pronta sem uma tentativa "
+                "sua. Posso explicar a estrutura do Iterator, revisar seu código "
+                "ou orientar a implementação passo a passo."
+            )
         context = self.memory.format_context()
         try:
             response = run_crew(self.config, question, flow, context)

@@ -13,6 +13,7 @@ class Flow(StrEnum):
     CONCEPT = "concept"
     EXAMPLE = "example"
     DIAGNOSTIC = "diagnostic"
+    SOLUTION_REFUSAL = "solution_refusal"
 
 
 @dataclass(frozen=True)
@@ -87,6 +88,16 @@ FABRICATION_PATTERNS = (
     ),
 )
 
+SOLUTION_REQUEST_PATTERNS = (
+    re.compile(
+        r"\b(?:me entregue|me d[eê]|forne[cç]a|entregue|d[eê]-me|gere|crie|fa[cç]a|escreva)\b"
+        r".{0,80}\b(?:c[oó]digo|solu[cç][aã]o|implementa[cç][aã]o)\b"
+        r".{0,40}\b(?:pront\w*|complet\w*|inteir\w*)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(r"\b(?:c[oó]digo|solu[cç][aã]o|implementa[cç][aã]o)\b.{0,30}\b(?:pront\w*|complet\w*)\b", re.IGNORECASE),
+)
+
 
 def _normalize(text: str) -> str:
     return " ".join(text.casefold().split())
@@ -111,6 +122,11 @@ def _is_fabrication_request(question: str) -> bool:
             continue
         return True
     return False
+
+
+def _is_solution_request(question: str) -> bool:
+    normalized = _normalize(question)
+    return any(pattern.search(normalized) for pattern in SOLUTION_REQUEST_PATTERNS)
 
 
 def _matches_rule(rule: RouteRule, question: str) -> bool:
@@ -141,5 +157,7 @@ def select_flow(question: str, config: Settings = settings) -> Flow:
         return Flow.GREETING
     if _is_fabrication_request(question):
         return Flow.REFUSAL
+    if _is_solution_request(question):
+        return Flow.SOLUTION_REFUSAL
     explicit_flow = _select_explicit_flow(question)
     return explicit_flow or _select_semantic_flow(question, config)

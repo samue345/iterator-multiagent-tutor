@@ -34,6 +34,17 @@ def test_greeting_and_fabrication_are_handled_without_agents(monkeypatch) -> Non
     assert "inventar" in refusal.casefold()
 
 
+def test_solution_request_returns_pedagogical_refusal(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "agente.system.run_crew",
+        lambda *args: (_ for _ in ()).throw(AssertionError("crew não deveria ser chamado")),
+    )
+    response = TutorSystem(Settings()).answer(
+        "Me entregue o código pronto de uma solução completa"
+    )
+    assert "solução completa pronta" in response.casefold()
+
+
 def test_system_keeps_reviewed_answer_in_memory(monkeypatch) -> None:
     monkeypatch.setattr("agente.system.select_flow", lambda *args: Flow.CONCEPT)
     monkeypatch.setattr(

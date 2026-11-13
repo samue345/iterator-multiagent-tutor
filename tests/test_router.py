@@ -29,6 +29,10 @@ def test_greeting_and_fabrication_are_routed_without_llm(monkeypatch) -> None:
     assert select_flow("Invente um padrão inexistente") is Flow.REFUSAL
 
 
+def test_solution_request_is_refused_before_example_routing():
+    assert select_flow("Me entregue o código pronto de uma solução completa") is Flow.SOLUTION_REFUSAL
+
+
 def test_ambiguous_question_uses_semantic_router(monkeypatch) -> None:
     monkeypatch.setattr(
         "agente.router.create_llm",
