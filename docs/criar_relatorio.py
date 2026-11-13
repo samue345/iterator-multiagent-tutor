@@ -207,7 +207,7 @@ def main():
         doc,
         ["Item", "Informação"],
         [
-            ["Integrantes da dupla", "1º integrante: a preencher; 2º integrante: Guilherme Fereira da Silva"],
+            ["Integrantes da dupla", "1º integrante: Samuel Souza; 2º integrante: Guilherme Fereira da Silva"],
             ["Padrão atribuído", "Iterator"],
             ["Nome do projeto", "Iterator Multiagent Tutor"],
             ["Versão do projeto", "Versão documentada em 13/11/2026"],
