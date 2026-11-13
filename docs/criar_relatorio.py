@@ -97,6 +97,41 @@ def add_code_block(doc, text):
     return paragraph
 
 
+def add_flow_diagram(doc):
+    doc.add_heading("2.6 Fluxo da resposta", level=2)
+    doc.add_paragraph(
+        "O fluxo abaixo mostra como uma pergunta percorre o tutor até chegar à resposta final."
+    )
+    labels = ["Pergunta", "Roteador", "Agente\nespecialista", "Revisor", "Resposta"]
+    table = doc.add_table(rows=1, cols=9)
+    for index, label in enumerate(labels):
+        box = table.rows[0].cells[index * 2]
+        box.text = label
+        set_cell_shading(box, "D9EAF7")
+        set_cell_border(box, color="5B9BD5", size="8")
+        for paragraph in box.paragraphs:
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            paragraph.paragraph_format.space_before = Pt(6)
+            paragraph.paragraph_format.space_after = Pt(6)
+            for run in paragraph.runs:
+                run.bold = True
+                run.font.size = Pt(9)
+        if index < len(labels) - 1:
+            arrow = table.rows[0].cells[index * 2 + 1]
+            arrow.text = "→"
+            for paragraph in arrow.paragraphs:
+                paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                for run in paragraph.runs:
+                    run.font.size = Pt(16)
+                    run.bold = True
+            set_cell_border(arrow, color="FFFFFF", size="0")
+    for row in table.rows:
+        for index, cell in enumerate(row.cells):
+            cell.width = Inches(0.92 if index % 2 == 0 else 0.22)
+    table.autofit = False
+    doc.add_paragraph("Figura 1 — Fluxo de atendimento da pergunta pelo tutor multiagente.").alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+
 def add_prompt(doc, name, role, goal, backstory, prompt):
     doc.add_heading(name, level=2)
     add_table(
@@ -216,6 +251,7 @@ def main():
     doc.add_heading("2.5 Coordenação e fluxo de ensino", level=2)
     add_code_block(doc, "Pergunta do estudante\n        ↓\nRoteador: saudação | recusa | conceitual | exemplo | diagnóstico\n        ↓\nAgente especialista + contexto da sessão\n        ↓\nAgente revisor\n        ↓\nResposta final revisada e memória da sessão")
     doc.add_paragraph("O roteador resolve saudações e pedidos de fabricação diretamente. Pedidos explícitos de exemplo ou diagnóstico são identificados por regras; perguntas ambíguas são classificadas pelo LLM local. O especialista recebe a pergunta e o histórico recente. O revisor recebe a tarefa anterior e o contexto, consolida a resposta e impede que uma saída vazia ou inválida seja armazenada.")
+    add_flow_diagram(doc)
 
     doc.add_heading("3 Justificativa das decisões de design", level=1)
     doc.add_heading("3.1 Divisão de papéis", level=2)
@@ -281,7 +317,7 @@ def main():
         "Repetir o tutor com Ollama na máquina da dupla e registrar eventuais limitações adicionais.",
         "Complementar o caderno com as sessões entre pares, se a disciplina exigir participantes diferentes da execução local registrada.",
         "Completar a declaração individual ou da dupla sobre as ferramentas de IA utilizadas.",
-        "Inserir figuras, capturas ou diagrama do fluxo, se a professora solicitar uma apresentação visual.",
+        "Confirmar se a professora solicita figuras adicionais além do fluxograma incluído neste relatório.",
     ])
     doc.add_heading("7 Conclusão", level=1)
     doc.add_paragraph("O sistema atende à arquitetura central do trabalho: múltiplos agentes com papéis distintos, memória de conversa, lógica pedagógica explícita, regras anti-alucinação, CLI padronizada, execução com modelo local e tratamento básico de erros. A entrega acadêmica fica completa após preencher os dados da dupla, executar a validação local com Ollama e anexar as evidências das sessões estruturadas.")
